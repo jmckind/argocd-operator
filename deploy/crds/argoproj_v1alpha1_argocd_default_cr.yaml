@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: argocd
+spec:
+  applicationController:
+    containerPort: 8082
+    servicePort: 8082
+    image:
+      repository: argoproj/argocd
+      tag: v1.2.3
+      pullPolicy: Always
+  server:
+    containerPort: 8080
+    metricsPort: 8083
+    servicePortHttp: 80
+    servicePortHttps: 443
+    serviceAnnotations: {}
+    image:
+      repository: argoproj/argocd
+      tag: v1.2.3
+      pullPolicy: Always
+    serviceType: ClusterIP
+  repoServer:
+    containerPort: 8081
+    servicePort: 8081
+    image:
+      repository: argoproj/argocd
+      tag: v1.2.3
+      pullPolicy: Always
+  dexServer:
+    containerPortHttp: 5556
+    containerPortGrpc: 5557
+    servicePortHttp: 5556
+    servicePortGrpc: 5557
+    image:
+      repository: quay.io/dexidp/dex
+      tag: v2.19.0
+      pullPolicy: Always
+    initImage:
+      repository: argoproj/argocd
+      tag: v1.2.3
+      pullPolicy: Always
+  ingress:
+    enabled: false
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    path: /
+    additionalHosts: []
+    tls:
+      # Secrets must be manually created in the namespace.
+      # - secretName: chart-example-tls
+      #   hosts:
+      #     - chart-example.local

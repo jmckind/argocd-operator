@@ -28,6 +28,269 @@ spec:
         metadata:
           type: object
         spec:
+          properties:
+            applicationController:
+              properties:
+                containerPort:
+                  description: Container port for application controller server and
+                    metrics
+                  format: int64
+                  type: integer
+                image:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                servicePort:
+                  description: Service port for applicaiton controller server
+                  format: int64
+                  type: integer
+                volumeMounts:
+                  description: Additional volume mounts
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  description: Additional volumes
+                  items:
+                    type: object
+                  type: array
+              required:
+              - containerPort
+              - servicePort
+              - image
+              type: object
+            dexServer:
+              properties:
+                anntotations:
+                  additionalProperties:
+                    type: string
+                  description: Annotations for the server deployment
+                  type: object
+                containerPortGrpc:
+                  description: Container port for Dex Server GRPC
+                  format: int64
+                  type: integer
+                containerPortHttp:
+                  description: Container port for Dex Server HTTP
+                  format: int64
+                  type: integer
+                image:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                initImage:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                servicePortGrpc:
+                  description: Service port for Dex Server GRPC
+                  format: int64
+                  type: integer
+                servicePortHttp:
+                  description: Service port for Dex Server HTTP
+                  format: int64
+                  type: integer
+                volumeMounts:
+                  description: Additional volume mounts
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  description: Additional volumes
+                  items:
+                    type: object
+                  type: array
+              required:
+              - containerPortHttp
+              - containerPortGrpc
+              - servicePortHttp
+              - servicePortGrpc
+              - image
+              - initImage
+              type: object
+            ingress:
+              properties:
+                additionalHosts:
+                  description: Ingress additional hosts
+                  items:
+                    type: string
+                  type: array
+                anntotations:
+                  additionalProperties:
+                    type: string
+                  description: Annotations for ingress object
+                  type: object
+                enabled:
+                  description: Enable ingress
+                  type: boolean
+                path:
+                  type: string
+                tls:
+                  description: Ingress TLS configuration (check!)
+                  type: string
+              required:
+              - enabled
+              - path
+              type: object
+            repoServer:
+              properties:
+                containerPort:
+                  description: Container port for repo server
+                  format: int64
+                  type: integer
+                image:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                servicePort:
+                  description: Service port for repo server
+                  format: int64
+                  type: integer
+                volumeMounts:
+                  description: Additional volume mounts
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  description: Additional volumes
+                  items:
+                    type: object
+                  type: array
+              required:
+              - containerPort
+              - servicePort
+              - image
+              type: object
+            server:
+              properties:
+                anntotations:
+                  additionalProperties:
+                    type: string
+                  description: Annotations for the server deployment
+                  type: object
+                containerPort:
+                  description: Container port for server
+                  format: int64
+                  type: integer
+                extraArgs:
+                  description: Add additional arguments
+                  items:
+                    type: string
+                  type: array
+                image:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                metricsPort:
+                  description: Container port for server metrics
+                  format: int64
+                  type: integer
+                serviceAnnotations:
+                  additionalProperties:
+                    type: string
+                  description: Annotations for server service
+                  type: object
+                servicePortHttp:
+                  description: HTTP Container port for server
+                  format: int64
+                  type: integer
+                servicePortHttps:
+                  description: HTTPS Container port for server
+                  format: int64
+                  type: integer
+                serviceType:
+                  description: Service Type string describes ingress methods for a
+                    service
+                  type: string
+                volumeMounts:
+                  description: Additional volume mounts
+                  items:
+                    type: object
+                  type: array
+                volumes:
+                  description: Additional volumes
+                  items:
+                    type: object
+                  type: array
+              required:
+              - containerPort
+              - metricsPort
+              - servicePortHttp
+              - servicePortHttps
+              - image
+              - serviceType
+              type: object
+          required:
+          - applicationController
+          - server
+          - repoServer
+          - dexServer
+          - ingress
           type: object
         status:
           type: object

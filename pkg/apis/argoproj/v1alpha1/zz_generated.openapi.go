@@ -65,10 +65,38 @@ func schema_pkg_apis_argoproj_v1alpha1_ArgoCDSpec(ref common.ReferenceCallback) 
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
 				Description: "ArgoCDSpec defines the desired state of ArgoCD",
-				Properties:  map[string]spec.Schema{},
+				Properties: map[string]spec.Schema{
+					"applicationController": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.ApplicationControllerStruct"),
+						},
+					},
+					"server": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.ServerStruct"),
+						},
+					},
+					"repoServer": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.RepoServerStruct"),
+						},
+					},
+					"dexServer": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.DexServerStruct"),
+						},
+					},
+					"ingress": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.IngressStruct"),
+						},
+					},
+				},
+				Required: []string{"applicationController", "server", "repoServer", "dexServer", "ingress"},
 			},
 		},
-		Dependencies: []string{},
+		Dependencies: []string{
+			"./pkg/apis/argoproj/v1alpha1.ApplicationControllerStruct", "./pkg/apis/argoproj/v1alpha1.DexServerStruct", "./pkg/apis/argoproj/v1alpha1.IngressStruct", "./pkg/apis/argoproj/v1alpha1.RepoServerStruct", "./pkg/apis/argoproj/v1alpha1.ServerStruct"},
 	}
 }
 
