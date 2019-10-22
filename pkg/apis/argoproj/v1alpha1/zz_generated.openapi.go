@@ -64,7 +64,7 @@ func schema_pkg_apis_argoproj_v1alpha1_ArgoCDSpec(ref common.ReferenceCallback) 
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
-				Description: "ArgoCDSpec defines the desired state of ArgoCD",
+				Description: "ArgoCDSpec defines the desired state of ArgoCD All omitempty in the moment",
 				Properties: map[string]spec.Schema{
 					"applicationController": {
 						SchemaProps: spec.SchemaProps{
@@ -91,12 +91,36 @@ func schema_pkg_apis_argoproj_v1alpha1_ArgoCDSpec(ref common.ReferenceCallback) 
 							Ref: ref("./pkg/apis/argoproj/v1alpha1.IngressStruct"),
 						},
 					},
+					"redis": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.RedisStruct"),
+						},
+					},
+					"rbac": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.RbacStruct"),
+						},
+					},
+					"certificate": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.CertificateStruct"),
+						},
+					},
+					"clusterAdminAccess": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.ClusterAdminAccessStruct"),
+						},
+					},
+					"config": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("./pkg/apis/argoproj/v1alpha1.ConfigStruct"),
+						},
+					},
 				},
-				Required: []string{"applicationController", "server", "repoServer", "dexServer", "ingress"},
 			},
 		},
 		Dependencies: []string{
-			"./pkg/apis/argoproj/v1alpha1.ApplicationControllerStruct", "./pkg/apis/argoproj/v1alpha1.DexServerStruct", "./pkg/apis/argoproj/v1alpha1.IngressStruct", "./pkg/apis/argoproj/v1alpha1.RepoServerStruct", "./pkg/apis/argoproj/v1alpha1.ServerStruct"},
+			"./pkg/apis/argoproj/v1alpha1.ApplicationControllerStruct", "./pkg/apis/argoproj/v1alpha1.CertificateStruct", "./pkg/apis/argoproj/v1alpha1.ClusterAdminAccessStruct", "./pkg/apis/argoproj/v1alpha1.ConfigStruct", "./pkg/apis/argoproj/v1alpha1.DexServerStruct", "./pkg/apis/argoproj/v1alpha1.IngressStruct", "./pkg/apis/argoproj/v1alpha1.RbacStruct", "./pkg/apis/argoproj/v1alpha1.RedisStruct", "./pkg/apis/argoproj/v1alpha1.RepoServerStruct", "./pkg/apis/argoproj/v1alpha1.ServerStruct"},
 	}
 }
 

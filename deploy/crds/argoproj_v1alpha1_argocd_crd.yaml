@@ -72,13 +72,90 @@ spec:
               - servicePort
               - image
               type: object
+            certificate:
+              properties:
+                enabled:
+                  description: Enable certificate (requires cert-manager)
+                  type: boolean
+                issuer:
+                  properties:
+                    kind:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - kind
+                  - name
+                  type: object
+              required:
+              - enabled
+              type: object
+            clusterAdminAccess:
+              properties:
+                enabled:
+                  description: Standard Argo CD installation with cluster-admin access.
+                    Set this true if you plan to use Argo CD to deploy applications
+                    in the same cluster that Argo CD runs in (i.e. kubernetes.svc.default).
+                    Will still be able to deploy to external clusters with inputted
+                    credentials.
+                  type: boolean
+              required:
+              - enabled
+              type: object
+            config:
+              properties:
+                configManagementPlugins:
+                  description: List of custom config management plugins
+                  type: string
+                createSecret:
+                  description: Creates the argocd-secret secret, set to false to manage
+                    externally
+                  type: boolean
+                dexConfig:
+                  description: Configuration for external auth and URL
+                  type: string
+                enableAnonymousAccess:
+                  type: boolean
+                helmRepositories:
+                  description: Configuration for external Helm charts
+                  type: string
+                instanceLabelKey:
+                  description: Custom instance label key
+                  type: string
+                oidcConfig:
+                  description: Configuration for OpenID connect
+                  type: string
+                repositories:
+                  description: Configuration for remote Git repositories for Applications
+                  type: string
+                resourceCustomizations:
+                  description: ResourceCustomizations can be used to create custom
+                    health checks for resources
+                  type: string
+                resourceExclusions:
+                  type: string
+                url:
+                  description: External URL for ArgoCD
+                  type: string
+                webhook:
+                  properties:
+                    bitbucketSecret:
+                      description: BitBucket incoming webhook secret
+                      type: string
+                    githubSecret:
+                      description: GitHub incoming webhook secret
+                      type: string
+                    gitlabSecret:
+                      description: GitLab incoming webhook secret
+                      type: string
+                  type: object
+              required:
+              - createSecret
+              - resourceExclusions
+              - enableAnonymousAccess
+              type: object
             dexServer:
               properties:
-                anntotations:
-                  additionalProperties:
-                    type: string
-                  description: Annotations for the server deployment
-                  type: object
                 containerPortGrpc:
                   description: Container port for Dex Server GRPC
                   format: int64
@@ -165,11 +242,59 @@ spec:
                 path:
                   type: string
                 tls:
-                  description: Ingress TLS configuration (check!)
-                  type: string
+                  additionalProperties:
+                    type: string
+                  description: Ingress TLS configuration
+                  type: object
               required:
               - enabled
               - path
+              type: object
+            rbac:
+              properties:
+                policyCvs:
+                  description: RBAC policy in CSV
+                  type: string
+                policyDefault:
+                  description: 'The default role Argo CD will fall back to, when authorizing
+                    API requests, ie: role:readonly'
+                  type: string
+                scopes:
+                  description: 'Scopes controls which OIDC scopes to examine during
+                    rbac enforcement (in addition to sub scope). ie: [groups]'
+                  type: string
+              type: object
+            redis:
+              properties:
+                containerPort:
+                  description: Container port for Redis
+                  format: int64
+                  type: integer
+                image:
+                  description: Describe a container image
+                  properties:
+                    pullPolicy:
+                      description: Docker image pull policy
+                      type: string
+                    repository:
+                      description: Docker image repo
+                      type: string
+                    tag:
+                      description: Docker image tag
+                      type: string
+                  required:
+                  - pullPolicy
+                  - repository
+                  - tag
+                  type: object
+                servicePort:
+                  description: Service port for Redis
+                  format: int64
+                  type: integer
+              required:
+              - containerPort
+              - servicePort
+              - image
               type: object
             repoServer:
               properties:
@@ -285,12 +410,6 @@ spec:
               - image
               - serviceType
               type: object
-          required:
-          - applicationController
-          - server
-          - repoServer
-          - dexServer
-          - ingress
           type: object
         status:
           type: object
