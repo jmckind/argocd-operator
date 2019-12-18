@@ -63,7 +63,7 @@ func getArgoServerCommand(cr *argoproj.ArgoCD) []string {
 	cmd = append(cmd, "argocd-server")
 
 	cmd = append(cmd, "--dex-server")
-	cmd = append(cmd, nameWithSuffix("dex-server:5556", cr))
+	cmd = append(cmd, fmt.Sprintf("%s://%s", "http", nameWithSuffix("dex-server:5556", cr)))
 
 	cmd = append(cmd, "--redis")
 	cmd = append(cmd, nameWithSuffix("redis:6379", cr))
